@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - JobConnect</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            background: white;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body class="login-body">
+
+    <div class="login-container">
+        <h2>Join Job<span style="color:#0077b5;">Connect</span></h2>
+        <p>Make the most of your professional life</p>
+
+        <form id="userForm">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+
+            <input type="password" id="password" placeholder="Password (6+ characters)" required minlength="6">
+
+            <input type="number" id="age" placeholder="Age" required>
+
+            <select id="role" required>
+                <option value="" disabled selected>You are joining as...</option>
+                <option value="Student">Student / Job Seeker</option>
+                <option value="Recruiter">Company / HR / Recruiter</option>
+            </select>
+
+            <button type="submit">Agree & Join</button>
+        </form>
+
+        <p class="switch-text">Already on JobConnect? <a href="login.html">Sign in</a></p>
+    </div>
+
+    <script>
+        // --- PART A: AGAR PEHLE SE LOGIN HAI TO DASHBOARD BHEJ DO ---
+        if (localStorage.getItem('currentUser')) {
+            window.location.href = "dashboard.html";
+        }
+
+        // --- PART B: FORM SUBMIT LOGIC ---
+        document.getElementById('userForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const age = document.getElementById('age').value;
+
+            // New: Role ki value uthao
+            const role = document.getElementById('role').value;
+
+            const response = await fetch('/add-user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                // Role ko bhi server bhejo
+                body: JSON.stringify({ name, email, password, age, role })
+            });
+
+            // Agar sab sahi hai (Status 200)
+            if (response.ok) {
+                const user = await response.json();
+                localStorage.setItem('currentUser', JSON.stringify(user));
+
+                // Redirect based on logic (Currently both go to dashboard, but logic is ready)
+                window.location.href = "dashboard.html";
+            }
+            // Agar Email Duplicate hai (Status 400)
+            else if (response.status === 400) {
+                alert("Yeh Email ID pehle se registered hai! Kripya Login karein.");
+                window.location.href = "login.html";
+            }
+            else {
+                alert("Error registering user");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

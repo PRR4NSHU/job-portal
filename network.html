@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Network | JobConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #e0e5ec;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(108, 92, 231, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(116, 185, 255, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(162, 155, 254, 0.3) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(223, 228, 234, 0.8) 0px, transparent 50%);
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+            color: #2d3436;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: rgba(255, 255, 255, 0.75) !important;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 65px;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6c5ce7;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-icons a {
+            text-decoration: none;
+            color: #b2bec3;
+            font-size: 24px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+        }
+
+        .nav-icons a:hover,
+        .nav-icons a.active {
+            color: #6c5ce7;
+            background: rgba(108, 92, 231, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            color: #ff7675;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 2px 10px rgba(108, 92, 231, 0.3);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 0 15px;
+                height: 60px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-icons {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 15px 0;
+                gap: 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+                transform: translateY(-150%);
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 998;
+            }
+
+            .nav-icons.active {
+                transform: translateY(0);
+            }
+
+            .nav-icons a {
+                font-size: 22px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* --- PAGE LAYOUT --- */
+        .main-layout {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* --- SEARCH BAR --- */
+        .search-wrapper {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 50px;
+            padding: 8px 8px 8px 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+            border: 1px solid transparent;
+            z-index: 5;
+            position: relative;
+        }
+
+        .search-container:focus-within {
+            border-color: #6c5ce7;
+            box-shadow: 0 5px 25px rgba(108, 92, 231, 0.2);
+        }
+
+        .search-container input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            padding: 10px 0;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .suggestions-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 4;
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+            margin-top: -15px;
+            padding-top: 20px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .suggestion-item {
+            padding: 12px 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #f9f9f9;
+            transition: 0.2s;
+            font-size: 15px;
+        }
+
+        .suggestion-item:hover {
+            background: #f8f9fa;
+            color: #6c5ce7;
+        }
+
+        .sugg-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Network Grid */
+        .network-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .network-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            border: 1px solid #f0f0f0;
+            transition: 0.3s;
+            overflow: hidden;
+        }
+
+        .network-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(135deg, #a29bfe, #74b9ff);
+            z-index: 0;
+        }
+
+        .network-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.15);
+        }
+
+        .net-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            position: relative;
+            z-index: 1;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .net-info h4 {
+            margin: 10px 0 5px 0;
+            font-size: 16px;
+            color: #2d3436;
+        }
+
+        .net-info small {
+            display: block;
+            color: #636e72;
+            font-size: 12px;
+            margin-bottom: 15px;
+            height: 32px;
+            overflow: hidden;
+        }
+
+        /* Buttons */
+        .btn-row,
+        .connection-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(108, 92, 231, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #636e72;
+            border: 1px solid #dfe6e9;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-outline:hover {
+            border-color: #6c5ce7;
+            color: #6c5ce7;
+        }
+
+        .btn-remove {
+            background: #ffeaa7;
+            color: #d35400;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-remove:hover {
+            background: #ff7675;
+            color: white;
+        }
+
+        .req-badge {
+            background: #ff7675;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        /* --- PROFILE PREVIEW MODAL --- */
+        .preview-modal-content {
+            background: #fff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .preview-cover {
+            height: 100px;
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            border-radius: 15px 15px 0 0;
+            margin: -30px -30px 40px -30px;
+        }
+
+        .preview-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            object-fit: cover;
+            margin-top: -80px;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2d3436;
+            margin: 10px 0 2px;
+        }
+
+        /* NEW: EMAIL STYLE */
+        .preview-email {
+            font-size: 13px;
+            color: #6c5ce7;
+            margin-bottom: 5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .preview-headline {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 20px;
+        }
+
+        .preview-actions {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .preview-btn {
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+            flex: 1;
+        }
+
+        .btn-primary-modal {
+            background: #6c5ce7;
+            color: white;
+        }
+
+        .btn-primary-modal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .btn-secondary-modal {
+            background: #dfe6e9;
+            color: #2d3436;
+        }
+
+        .btn-secondary-modal:hover {
+            background: #b2bec3;
+        }
+
+        .clickable-profile {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .clickable-profile:hover {
+            opacity: 0.8;
+        }
+
+        /* Logout Modal */
+        #logout-modal,
+        #profile-preview-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">JobConnect</div>
+        <div class="menu-toggle" onclick="toggleNavbar()"><i class="fas fa-bars"></i></div>
+        <div class="nav-icons" id="nav-links">
+            <a href="dashboard.html" id="nav-home" title="Home"><i class="fas fa-home"></i></a>
+            <a href="jobs.html" id="nav-jobs" title="Jobs"><i class="fas fa-briefcase"></i></a>
+            <a href="network.html" id="nav-network" class="active" title="Network"><i
+                    class="fas fa-user-friends"></i></a>
+            <i class="fas fa-sign-out-alt logout-btn" onclick="logoutUser()" title="Logout"></i>
+            <img src="https://via.placeholder.com/30" class="nav-profile-img"
+                onclick="window.location.href='profile.html'" title="Profile">
+        </div>
+    </nav>
+
+    <div class="main-layout">
+
+        <div class="glass-panel" id="invitation-section" style="display:none;">
+            <div class="section-title">
+                <span>Invitations</span>
+                <span id="req-count" class="req-badge">0</span>
+            </div>
+            <div id="invitation-area" class="network-grid"></div>
+        </div>
+
+        <div class="glass-panel" style="text-align: center; padding: 50px 25px;">
+            <h2 style="margin-top:0; color:#2d3436; font-size: 28px;">Grow Your Network</h2>
+            <p style="color:#636e72; margin-bottom:35px; font-size: 16px;">Find professionals, recruiters, and friends.
+            </p>
+
+            <div class="search-wrapper">
+                <div class="search-container">
+                    <i class="fas fa-search" style="color: #b2bec3; font-size: 20px; margin-right: 10px;"></i>
+                    <input type="text" id="search-input" placeholder="Search by Name or Email..." autocomplete="off"
+                        onkeyup="handleTyping()">
+                    <button class="search-btn" onclick="searchUsers()">Search</button>
+                </div>
+                <div id="suggestions-box" class="suggestions-dropdown"></div>
+            </div>
+
+            <div id="search-results" class="network-grid" style="margin-top: 40px;"></div>
+        </div>
+
+        <div class="glass-panel">
+            <div class="section-title">My Connections</div>
+            <div id="connections-area" class="network-grid">
+                <div style="grid-column: 1/-1; text-align: center; color: #b2bec3; padding: 20px;">
+                    <i class="fas fa-users" style="font-size: 40px; margin-bottom: 10px;"></i>
+                    <p>No connections yet.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="logout-modal">
+        <div
+            style="background:#fff; padding:30px; border-radius:15px; text-align:center; width:300px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            <div style="font-size:40px;">👋</div>
+            <h3>Signing Out?</h3>
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+                <button onclick="confirmLogout()"
+                    style="background:#ff7675; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">Yes</button>
+                <button onclick="closeLogoutModal()"
+                    style="background:#dfe6e9; color:#333; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="profile-preview-modal" class="modal-overlay">
+        <div class="preview-modal-content">
+            <span class="close-btn" onclick="closePreviewModal()"
+                style="position: absolute; top: 10px; right: 15px; color: white; font-size: 24px; cursor: pointer;">&times;</span>
+
+            <div class="preview-cover"></div>
+            <img src="" id="preview-img" class="preview-pic">
+
+            <h3 id="preview-name" class="preview-name">User Name</h3>
+            <p id="preview-email" class="preview-email"><i class="fas fa-envelope"></i> email@example.com</p>
+            <p id="preview-headline" class="preview-headline">User Headline goes here...</p>
+
+            <div id="preview-role-badge"
+                style="display:inline-block; background:#e3f2fd; color:#0984e3; padding:4px 12px; border-radius:15px; font-size:12px; margin-bottom:15px;">
+                Student
+            </div>
+
+            <div id="preview-action-area" class="preview-actions">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) window.location.href = "login.html";
+
+        function toggleNavbar() { document.getElementById('nav-links').classList.toggle('active'); }
+
+        // --- 1. LOAD MY PROFILE ---
+        loadUserProfile();
+        async function loadUserProfile() {
+            try {
+                const res = await fetch('/get-profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUser.email }) });
+                const user = await res.json();
+                document.querySelector('.nav-profile-img').src = user.profilePic || "https://via.placeholder.com/150";
+            } catch (err) { console.log(err); }
+        }
+
+        // --- 2. LOAD NETWORK & SEARCH ---
+        loadNetwork();
+
+        function generateCardHTML(user, type) {
+            const userPic = user.profilePic || "https://via.placeholder.com/80";
+            const headline = user.headline || (type === 'connection' ? 'Connected' : 'No Bio');
+
+            const userDataString = encodeURIComponent(JSON.stringify(user));
+
+            let btnHtml = '';
+            if (type === 'invitation') {
+                btnHtml = `<div class="btn-row"><button class="btn-primary" onclick="acceptRequest('${user._id}')">Accept</button><button class="btn-outline" onclick="alert('Ignored')">Ignore</button></div>`;
+            } else if (type === 'connection') {
+                btnHtml = `<div class="connection-actions"><button class="btn-primary" onclick="openChat('${user._id}', '${user.name}')"><i class="fas fa-comment"></i></button><button class="btn-remove" onclick="disconnectUser('${user._id}', '${user.name}')"><i class="fas fa-user-minus"></i></button></div>`;
+            } else if (type === 'search') {
+                if (user.isConnected) btnHtml = `<div class="btn-row"><button class="btn-outline" disabled style="border-color:#2ecc71; color:#2ecc71;">Connected</button></div>`;
+                else if (user.isPending) btnHtml = `<div class="btn-row"><button class="btn-outline" disabled style="border-color:#f1c40f; color:#f1c40f;">Pending</button></div>`;
+                else btnHtml = `<div class="btn-row"><button class="btn-primary" onclick="sendRequest('${user._id}')">Connect</button></div>`;
+            }
+
+            return `
+                <div class="network-card">
+                    <div class="clickable-profile" onclick="openProfilePreview('${userDataString}', '${type}')">
+                        <img src="${userPic}" class="net-img">
+                        <div class="net-info">
+                            <h4>${user.name}</h4>
+                            <small>${headline}</small>
+                        </div>
+                    </div>
+                    ${btnHtml}
+                </div>
+            `;
+        }
+
+        async function loadNetwork() {
+            try {
+                const res = await fetch('/get-network', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUser.email }) });
+                const data = await res.json();
+
+                const reqArea = document.getElementById('invitation-area');
+                const reqSection = document.getElementById('invitation-section');
+                if (data.requests.length > 0) {
+                    reqSection.style.display = 'block';
+                    document.getElementById('req-count').innerText = data.requests.length;
+                    reqArea.innerHTML = data.requests.map(user => generateCardHTML(user, 'invitation')).join('');
+                } else { reqSection.style.display = 'none'; }
+
+                const connArea = document.getElementById('connections-area');
+                connArea.innerHTML = '';
+                if (data.connections.length > 0) {
+                    connArea.innerHTML = data.connections.map(user => generateCardHTML(user, 'connection')).join('');
+                } else {
+                    connArea.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #b2bec3; padding: 20px;"><i class="fas fa-users" style="font-size: 40px; margin-bottom: 10px;"></i><p>No connections yet.</p></div>';
+                }
+            } catch (e) { console.log(e); }
+        }
+
+        let debounceTimer;
+        function handleTyping() {
+            const query = document.getElementById('search-input').value;
+            const dropDown = document.getElementById('suggestions-box');
+            clearTimeout(debounceTimer);
+            if (query.length === 0) { dropDown.style.display = 'none'; document.getElementById('search-results').innerHTML = ''; return; }
+            debounceTimer = setTimeout(() => { searchUsers(true); }, 300);
+        }
+
+        async function searchUsers(showSuggestions = false) {
+            const query = document.getElementById('search-input').value;
+            if (!query) return;
+            const res = await fetch('/search-users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query, myId: currentUser._id }) });
+            const users = await res.json();
+
+            const area = document.getElementById('search-results');
+            const dropDown = document.getElementById('suggestions-box');
+            area.innerHTML = ''; dropDown.innerHTML = '';
+
+            if (users.length === 0) { area.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:gray;">No users found.</p>'; dropDown.style.display = 'none'; return; }
+
+            if (showSuggestions) {
+                dropDown.style.display = 'block';
+                users.slice(0, 5).forEach(user => {
+                    const pic = user.profilePic || "https://via.placeholder.com/30";
+                    dropDown.innerHTML += `<div class="suggestion-item" onclick="selectSuggestion('${user.name}')"><img src="${pic}" class="sugg-img"><span>${user.name}</span></div>`;
+                });
+            }
+
+            area.innerHTML = users.filter(user => user._id !== currentUser._id).map(user => generateCardHTML(user, 'search')).join('');
+        }
+
+        function selectSuggestion(name) {
+            document.getElementById('search-input').value = name;
+            document.getElementById('suggestions-box').style.display = 'none';
+            searchUsers(false);
+        }
+
+        // --- PREVIEW MODAL LOGIC ---
+        function openProfilePreview(userString, type) {
+            const user = JSON.parse(decodeURIComponent(userString));
+
+            document.getElementById('preview-img').src = user.profilePic || "https://via.placeholder.com/150";
+            document.getElementById('preview-name').innerText = user.name;
+
+            // --- INJECT EMAIL ---
+            document.getElementById('preview-email').innerHTML = `<i class="fas fa-envelope"></i> ${user.email}`;
+
+            document.getElementById('preview-headline').innerText = user.headline || "No bio available";
+            document.getElementById('preview-role-badge').innerText = user.role || "User";
+
+            const actionArea = document.getElementById('preview-action-area');
+
+            if (type === 'connection') {
+                actionArea.innerHTML = `
+                    <button class="preview-btn btn-primary-modal" onclick="openChat('${user._id}', '${user.name}')">Message</button>
+                    <button class="preview-btn btn-secondary-modal" onclick="disconnectUser('${user._id}', '${user.name}')">Remove</button>
+                `;
+            } else if (type === 'invitation') {
+                actionArea.innerHTML = `<button class="preview-btn btn-primary-modal" onclick="acceptRequest('${user._id}')">Confirm Request</button>`;
+            } else {
+                if (user.isConnected) {
+                    actionArea.innerHTML = `<button class="preview-btn btn-primary-modal" onclick="openChat('${user._id}', '${user.name}')">Message</button>`;
+                } else if (user.isPending) {
+                    actionArea.innerHTML = `<button class="preview-btn btn-secondary-modal" disabled>Request Sent</button>`;
+                } else {
+                    actionArea.innerHTML = `<button class="preview-btn btn-primary-modal" onclick="sendRequest('${user._id}')">Connect</button>`;
+                }
+            }
+
+            document.getElementById('profile-preview-modal').style.display = 'flex';
+            document.getElementById('profile-preview-modal').style.justifyContent = 'center';
+            document.getElementById('profile-preview-modal').style.alignItems = 'center';
+        }
+
+        function closePreviewModal() { document.getElementById('profile-preview-modal').style.display = 'none'; }
+
+        // --- ACTIONS ---
+        async function sendRequest(receiverId) { const res = await fetch('/send-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senderEmail: currentUser.email, receiverId }) }); const data = await res.json(); alert(data.message); searchUsers(); closePreviewModal(); }
+        async function acceptRequest(requesterId) { const res = await fetch('/accept-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ myEmail: currentUser.email, requesterId }) }); if (res.ok) { loadNetwork(); closePreviewModal(); } }
+        async function disconnectUser(targetId, targetName) { if (!confirm(`Remove ${targetName}?`)) return; const res = await fetch('/remove-connection', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ myEmail: currentUser.email, targetId: targetId }) }); if (res.ok) { loadNetwork(); closePreviewModal(); } }
+        function openChat(friendId, friendName) { window.location.href = `chat.html?id=${friendId}&name=${encodeURIComponent(friendName)}`; }
+
+        function logoutUser() { document.getElementById('logout-modal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logout-modal').style.display = 'none'; }
+        function confirmLogout() { localStorage.removeItem('currentUser'); window.location.href = "login.html"; }
+    </script>
+</body>
+
+</html>

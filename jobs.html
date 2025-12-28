@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs | JobConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Global & Navbar Styles (Same as Dashboard) */
+        body { margin: 0; font-family: 'Poppins', sans-serif; background-color: #e0e5ec; background-image: radial-gradient(at 0% 0%, rgba(108, 92, 231, 0.3) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(116, 185, 255, 0.3) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(162, 155, 254, 0.3) 0px, transparent 50%), radial-gradient(at 0% 100%, rgba(223, 228, 234, 0.8) 0px, transparent 50%); background-attachment: fixed; background-size: cover; min-height: 100vh; color: #2d3436; }
+        .main-layout { background: transparent !important; display: grid; gap: 25px; max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .navbar { background: rgba(255, 255, 255, 0.75) !important; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.5); position: sticky; top: 0; z-index: 1000; height: 65px; padding: 0 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .logo { font-size: 24px; font-weight: 700; color: #6c5ce7; letter-spacing: 0.5px; }
+        .nav-icons { display: flex; align-items: center; gap: 40px; }
+        .nav-icons a { text-decoration: none; color: #b2bec3; font-size: 24px; transition: 0.3s; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 12px; }
+        .nav-icons a:hover, .nav-icons a.active { color: #6c5ce7; background: rgba(108, 92, 231, 0.1); transform: translateY(-2px); }
+        .logout-btn { color: #ff7675; font-size: 22px; cursor: pointer; transition: 0.3s; }
+        .nav-profile-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; cursor: pointer; transition: 0.3s; box-shadow: 0 2px 10px rgba(108, 92, 231, 0.3); }
+        .menu-toggle { display: none; font-size: 24px; color: #333; cursor: pointer; }
+        
+        /* Grid Layouts based on Role */
+        .layout-recruiter { grid-template-columns: 1fr 2fr; } /* 2 Columns for HR */
+        .layout-student { grid-template-columns: 1fr; max-width: 800px; } /* 1 Column for Student */
+
+        @media (max-width: 900px) {
+            .navbar { padding: 0 15px; height: 60px; }
+            .menu-toggle { display: block; }
+            .nav-icons { position: absolute; top: 60px; left: 0; width: 100%; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(20px); flex-direction: row; justify-content: space-around; padding: 15px 0; gap: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transform: translateY(-150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 998; }
+            .nav-icons.active { transform: translateY(0); }
+            .nav-icons a { font-size: 22px; width: 40px; height: 40px; }
+            .main-layout { display: block; padding: 10px; }
+            .sidebar-left { margin-bottom: 20px; }
+        }
+
+        /* Glass Card */
+        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05); border-radius: 16px; padding: 25px; margin-bottom: 25px; }
+        .job-form-title { font-size: 18px; font-weight: 700; color: #2d3436; margin-bottom: 20px; border-bottom: 2px solid #f1f2f6; padding-bottom: 10px; }
+        .form-input { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #dfe6e9; background: #f8f9fa; margin-bottom: 15px; outline: none; font-family: 'Poppins', sans-serif; transition: 0.3s; box-sizing: border-box; }
+        .form-input:focus { border-color: #6c5ce7; background: #fff; box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1); }
+        .post-job-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 15px; }
+        .post-job-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3); }
+
+        .tabs { display: flex; gap: 15px; margin-bottom: 25px; background: rgba(255,255,255,0.5); padding: 5px; border-radius: 15px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; font-weight: 600; color: #636e72; cursor: pointer; border-radius: 12px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .tab-btn.active { background: #fff; color: #6c5ce7; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .notification-badge { background-color: #ff7675; color: white; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-left: 5px; display: none; box-shadow: 0 2px 5px rgba(255, 118, 117, 0.4); }
+
+        /* Job Cards */
+        .job-card { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 20px; border: 1px solid #f1f2f6; transition: 0.3s; position: relative; overflow: hidden; }
+        .job-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-color: #6c5ce7; }
+        .job-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .job-title { font-size: 18px; font-weight: 700; color: #2d3436; margin: 0; }
+        .job-company { color: #636e72; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+        .job-tag { background: #e3f2fd; color: #0984e3; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .job-desc { color: #636e72; font-size: 13px; margin: 15px 0; line-height: 1.6; }
+        .apply-btn { background: #00b894; color: white; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px; }
+        .apply-btn:hover { background: #00a884; }
+        .delete-btn { background: #ff7675; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 5px; }
+        .delete-btn:hover { background: #d63031; }
+
+        .applicant-box { background: #f8f9fa; border-radius: 12px; padding: 15px; margin-top: 15px; border: 1px solid #eee; }
+        .applicant-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .applicant-item:last-child { border-bottom: none; }
+        .app-info { display: flex; align-items: center; gap: 12px; }
+        .app-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .app-text h5 { margin: 0; font-size: 14px; color: #2d3436; }
+        .app-text small { font-size: 12px; color: #636e72; }
+        .contact-actions { display: flex; gap: 8px; }
+        .icon-btn { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 14px; transition: 0.2s; }
+        .icon-btn:hover { transform: scale(1.1); }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">JobConnect</div>
+        <div class="menu-toggle" onclick="toggleNavbar()"><i class="fas fa-bars"></i></div>
+        <div class="nav-icons" id="nav-links">
+            <a href="dashboard.html" id="nav-home" title="Home"><i class="fas fa-home"></i></a>
+            <a href="jobs.html" id="nav-jobs" class="active" title="Jobs"><i class="fas fa-briefcase"></i></a>
+            <a href="network.html" id="nav-network" title="Network"><i class="fas fa-user-friends"></i></a>
+            <i class="fas fa-sign-out-alt logout-btn" onclick="logoutUser()" title="Logout"></i>
+            <img src="https://via.placeholder.com/30" class="nav-profile-img" onclick="window.location.href='profile.html'" title="Profile">
+        </div>
+    </nav>
+
+    <div class="main-layout" id="jobs-layout">
+
+        <div class="sidebar-left" id="recruiter-panel">
+            <div class="glass-card">
+                <div class="job-form-title"><i class="fas fa-plus-circle" style="color:#6c5ce7;"></i> Post a Job</div>
+                <form id="jobForm">
+                    <input type="text" id="j-title" class="form-input" placeholder="Job Title (e.g. Frontend Dev)" required>
+                    <input type="text" id="j-company" class="form-input" placeholder="Company Name" required>
+                    <input type="text" id="j-location" class="form-input" placeholder="Location (e.g. Remote, Delhi)" required>
+                    <select id="j-type" class="form-input">
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Freelance">Freelance</option>
+                    </select>
+                    <textarea id="j-desc" rows="4" class="form-input" placeholder="Job Description & Requirements..." style="resize:none;"></textarea>
+                    <button type="submit" class="post-job-btn">Post Job Opportunity</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="feed-section">
+            <div class="glass-card" style="padding: 15px;">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('all')" id="tab-all">
+                        <i class="fas fa-search"></i> Find Jobs
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('my')" id="tab-my">
+                        <i class="fas fa-tasks"></i> Manage Responses
+                        <span id="response-badge" class="notification-badge">0</span>
+                    </button>
+                </div>
+
+                <div id="all-jobs-view">
+                    <div id="job-feed">
+                        <p style="text-align:center; color:#636e72; padding:20px;">Loading latest opportunities...</p>
+                    </div>
+                </div>
+
+                <div id="my-jobs-view" style="display: none;">
+                    <div id="my-posted-feed"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="logout-modal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; justify-content:center; align-items:center;">
+        <div style="background:#fff; padding:30px; border-radius:15px; text-align:center; width:300px;">
+            <h3>Signing Out?</h3>
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
+                <button onclick="confirmLogout()" style="background:#ff7675; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">Yes</button>
+                <button onclick="closeLogoutModal()" style="background:#dfe6e9; color:#333; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) window.location.href = "login.html";
+
+        document.querySelector('.nav-profile-img').src = currentUser.profilePic || "https://via.placeholder.com/30";
+        function toggleNavbar() { document.getElementById('nav-links').classList.toggle('active'); }
+
+        // --- CHECK USER ROLE ---
+        const userRole = currentUser.role || 'Student'; // Default to Student if not set
+        const layout = document.getElementById('jobs-layout');
+        const recruiterPanel = document.getElementById('recruiter-panel');
+        const manageTab = document.getElementById('tab-my');
+
+        if (userRole !== 'Recruiter') {
+            // STUDENT VIEW
+            recruiterPanel.style.display = 'none'; // Hide Form
+            manageTab.style.display = 'none'; // Hide Manage Tab
+            layout.classList.add('layout-student');
+        } else {
+            // RECRUITER VIEW
+            layout.classList.add('layout-recruiter');
+            updateApplicantBadge();
+        }
+
+        // --- NEW: UPDATE APPLICANT BADGE ---
+        async function updateApplicantBadge() {
+            if(userRole !== 'Recruiter') return;
+            try {
+                const res = await fetch('/my-posted-jobs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentUser.email })
+                });
+                const jobs = await res.json();
+                
+                let totalApplicants = 0;
+                jobs.forEach(job => {
+                    if(job.applicants) totalApplicants += job.applicants.length;
+                });
+
+                const badge = document.getElementById('response-badge');
+                if (totalApplicants > 0) {
+                    badge.innerText = totalApplicants;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            } catch (err) { console.log("Error updating badge"); }
+        }
+
+        // --- TAB SWITCHING ---
+        function switchTab(tab) {
+            if (tab === 'all') {
+                document.getElementById('all-jobs-view').style.display = 'block';
+                document.getElementById('my-jobs-view').style.display = 'none';
+                document.getElementById('tab-all').classList.add('active');
+                if(manageTab) manageTab.classList.remove('active');
+                loadJobs();
+            } else {
+                document.getElementById('all-jobs-view').style.display = 'none';
+                document.getElementById('my-jobs-view').style.display = 'block';
+                document.getElementById('tab-all').classList.remove('active');
+                if(manageTab) manageTab.classList.add('active');
+                loadMyPostedJobs();
+            }
+        }
+
+        // 1. POST JOB
+        document.getElementById('jobForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.querySelector('.post-job-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
+            btn.disabled = true;
+
+            const jobData = {
+                title: document.getElementById('j-title').value,
+                company: document.getElementById('j-company').value,
+                location: document.getElementById('j-location').value,
+                type: document.getElementById('j-type').value,
+                description: document.getElementById('j-desc').value,
+                postedBy: currentUser.name,
+                posterEmail: currentUser.email
+            };
+            
+            try {
+                const res = await fetch('/add-job', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(jobData) });
+                const data = await res.json();
+                
+                if (res.ok) { 
+                    e.target.reset(); 
+                    loadJobs();
+                    switchTab('all');
+                    updateApplicantBadge();
+                    alert(data.message);
+                } else {
+                    alert(data.message); // Show error (e.g. Access Denied)
+                }
+            } catch(e) { console.error(e); }
+            finally { 
+                btn.innerHTML = 'Post Job Opportunity'; 
+                btn.disabled = false; 
+            }
+        });
+
+        // 2. LOAD ALL JOBS
+        async function loadJobs() {
+            const res = await fetch('/all-jobs');
+            const jobs = await res.json();
+            const feed = document.getElementById('job-feed');
+            feed.innerHTML = '';
+
+            if(jobs.length === 0) {
+                feed.innerHTML = '<div style="text-align:center; padding:40px; color:#b2bec3;"><i class="fas fa-box-open" style="font-size:40px; margin-bottom:10px;"></i><p>No jobs posted yet.</p></div>';
+                return;
+            }
+
+            jobs.forEach(job => {
+                let actionButton = '';
+                if (job.posterEmail === currentUser.email) {
+                    actionButton = `<button class="delete-btn" onclick="deleteJob('${job._id}')"><i class="fas fa-trash-alt"></i> Delete</button>`;
+                } else {
+                    // Sirf Students ya dusre Recruiters apply kar sakein
+                    actionButton = `<button class="apply-btn" onclick="applyForJob('${job._id}')">Apply Now</button>`;
+                }
+
+                feed.innerHTML += `
+                    <div class="job-card">
+                        <div class="job-header">
+                            <div>
+                                <h3 class="job-title">${job.title}</h3>
+                                <div class="job-company"><i class="fas fa-building"></i> ${job.company} &nbsp; <i class="fas fa-map-marker-alt"></i> ${job.location}</div>
+                            </div>
+                            <span class="job-tag">${job.type}</span>
+                        </div>
+                        <p class="job-desc">${job.description}</p>
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #f1f2f6; padding-top:15px; margin-top:15px;">
+                            <small style="color:#b2bec3;">Posted by ${job.postedBy}</small>
+                            ${actionButton}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 3. DELETE JOB
+        async function deleteJob(jobId) {
+            if (!confirm("Are you sure you want to delete this post?")) return;
+            const res = await fetch(`/delete-job/${jobId}`, { method: 'DELETE' });
+            if (res.ok) { 
+                loadJobs(); 
+                loadMyPostedJobs();
+                updateApplicantBadge();
+            }
+        }
+
+        // 4. APPLY JOB
+        async function applyForJob(jobId) {
+            const res = await fetch('/apply-job', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ jobId: jobId, userEmail: currentUser.email })
+            });
+            const data = await res.json();
+            alert(data.message);
+        }
+
+        // 5. MANAGE RESPONSES
+        async function loadMyPostedJobs() {
+            const res = await fetch('/my-posted-jobs', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: currentUser.email })
+            });
+            const jobs = await res.json();
+            const feed = document.getElementById('my-posted-feed');
+            feed.innerHTML = '';
+
+            if (jobs.length === 0) {
+                feed.innerHTML = '<div style="text-align:center; padding:40px; color:#b2bec3;"><p>You haven\'t posted any jobs yet.</p></div>';
+                return;
+            }
+
+            jobs.forEach(job => {
+                let applicantsHtml = '';
+                if (job.applicants.length > 0) {
+                    job.applicants.forEach(app => {
+                        const appPic = app.profilePic || "https://via.placeholder.com/40";
+                        let links = '';
+                        if(app.github) links += `<a href="${app.github}" target="_blank" class="icon-btn" style="background:#333;"><i class="fab fa-github"></i></a>`;
+                        
+                        applicantsHtml += `
+                            <div class="applicant-item">
+                                <div class="app-info">
+                                    <img src="${appPic}" class="app-img">
+                                    <div class="app-text">
+                                        <h5>${app.name}</h5>
+                                        <small>${app.headline || 'No Headline'}</small>
+                                    </div>
+                                </div>
+                                <div class="contact-actions">
+                                    ${links}
+                                    <a href="mailto:${app.email}" class="icon-btn" style="background:#0984e3;"><i class="fas fa-envelope"></i></a>
+                                    <a href="network.html" class="icon-btn" style="background:#6c5ce7;"><i class="fas fa-user"></i></a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    applicantsHtml = '<p style="font-size:13px; color:#b2bec3; padding:10px; text-align:center;">No applicants yet.</p>';
+                }
+
+                feed.innerHTML += `
+                    <div class="job-card" style="border-left: 4px solid #6c5ce7;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3 class="job-title" style="font-size:16px;">${job.title}</h3>
+                            <button class="delete-btn" style="padding:6px 12px; font-size:12px;" onclick="deleteJob('${job._id}')">Remove</button>
+                        </div>
+                        <div class="applicant-box">
+                            <h6 style="margin:0 0 10px 0; color:#6c5ce7;">APPLICANTS (${job.applicants.length})</h6>
+                            ${applicantsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function logoutUser() { document.getElementById('logout-modal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logout-modal').style.display = 'none'; }
+        function confirmLogout() { localStorage.removeItem('currentUser'); window.location.href = "login.html"; }
+
+        loadJobs();
+    </script>
+</body>
+</html>

@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | JobConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #e0e5ec;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(108, 92, 231, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(116, 185, 255, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(162, 155, 254, 0.3) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(223, 228, 234, 0.8) 0px, transparent 50%);
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+            color: #2d3436;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: rgba(255, 255, 255, 0.75) !important;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 65px;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #6c5ce7;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-icons a {
+            text-decoration: none;
+            color: #b2bec3;
+            font-size: 24px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+        }
+
+        .nav-icons a:hover,
+        .nav-icons a.active {
+            color: #6c5ce7;
+            background: rgba(108, 92, 231, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            color: #ff7675;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 2px 10px rgba(108, 92, 231, 0.3);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 0 15px;
+                height: 60px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-icons {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 15px 0;
+                gap: 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+                transform: translateY(-150%);
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 998;
+            }
+
+            .nav-icons.active {
+                transform: translateY(0);
+            }
+
+            .nav-icons a {
+                font-size: 22px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* --- PROFILE LAYOUT --- */
+        .main-layout {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            position: relative;
+        }
+
+        /* Header */
+        .profile-header {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .cover-photo {
+            height: 180px;
+            background: linear-gradient(135deg, #a29bfe, #74b9ff);
+            width: 100%;
+        }
+
+        .profile-info {
+            padding: 20px 30px;
+            position: relative;
+        }
+
+        .profile-pic-container {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            margin-top: -90px;
+            position: relative;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .camera-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #6c5ce7;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- NEW: 3 DOT MENU STYLE --- */
+        .settings-container {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .three-dots-btn {
+            font-size: 20px;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .three-dots-btn:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Dropdown Menu */
+        .settings-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #fff;
+            width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            animation: fadeIn 0.2s;
+        }
+
+        .settings-dropdown.active {
+            display: block;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+            color: #ff7675;
+        }
+
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* General Inputs & Buttons */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid #dfe6e9;
+            background: #f9f9f9;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #6c5ce7;
+            background: #fff;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .add-btn {
+            background: #f1f2f6;
+            color: #6c5ce7;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .add-btn:hover {
+            background: #e1e2e6;
+        }
+
+        .save-btn {
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .edit-area {
+            display: none;
+            margin-top: 15px;
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .edit-icon {
+            color: #6c5ce7;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        /* Socials & Skills */
+        .social-row {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-size: 14px;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: #e3f2fd;
+            color: #0984e3;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .skill-delete {
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        /* Post Grid */
+        #my-posts-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .post-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #f0f0f0;
+            transition: 0.3s;
+            height: 100%;
+        }
+
+        .post-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .post-text {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            flex: 1;
+        }
+
+        .grid-post-media {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 10px;
+            background: #eee;
+        }
+
+        .delete-post-btn {
+            color: #ff7675;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: auto;
+            background: #fff5f5;
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        /* MODALS (Logout & Password) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .modal-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .modal-btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .btn-danger {
+            background: #ff7675;
+            color: white;
+        }
+
+        .btn-outline {
+            background: #dfe6e9;
+            color: #333;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">JobConnect</div>
+        <div class="menu-toggle" onclick="toggleNavbar()"><i class="fas fa-bars"></i></div>
+        <div class="nav-icons" id="nav-links">
+            <a href="dashboard.html"><i class="fas fa-home"></i></a>
+            <a href="jobs.html"><i class="fas fa-briefcase"></i></a>
+            <a href="network.html"><i class="fas fa-user-friends"></i></a>
+            <i class="fas fa-sign-out-alt logout-btn" onclick="openModal('logout-modal')"></i>
+        </div>
+    </nav>
+
+    <div class="main-layout">
+
+        <div class="glass-card profile-header">
+            <div class="cover-photo">
+                <div class="settings-container">
+                    <div class="three-dots-btn" onclick="toggleSettings()"><i class="fas fa-ellipsis-v"></i></div>
+                    <div class="settings-dropdown" id="settingsMenu">
+                        <div class="menu-item" onclick="openModal('password-modal')"><i class="fas fa-key"></i> Change
+                            Password</div>
+                        <div class="menu-item" onclick="openModal('logout-modal')"><i class="fas fa-sign-out-alt"></i>
+                            Logout</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-info">
+                <div class="profile-pic-container">
+                    <img src="https://via.placeholder.com/150" class="profile-pic" id="main-profile-img">
+                    <label for="profile-upload" class="camera-btn"><i class="fas fa-camera"></i></label>
+                    <input type="file" id="profile-upload" hidden accept="image/*">
+                </div>
+
+                <h2 id="p-name" style="margin: 15px 0 5px 0; color:#2d3436;">...</h2>
+                <p id="p-email" style="color: #636e72; font-size: 14px; margin: 0;">...</p>
+
+                <div style="margin-top: 10px;">
+                    <p id="p-role" style="color: #6c5ce7; font-weight: 600; font-size: 14px; display:inline;"></p>
+                    <p id="p-headline" style="color: #555; font-size: 14px; margin-top: 5px; font-style:italic;"></p>
+                    <i class="fas fa-pen edit-icon" onclick="toggleEditBio()"> Edit Info</i>
+                </div>
+
+                <div id="bio-edit-area" class="edit-area">
+                    <label style="font-size:12px; font-weight:600;">Role (e.g. Student, HR):</label>
+                    <input type="text" id="role-input" class="form-input" style="margin-bottom:10px;">
+                    <label style="font-size:12px; font-weight:600;">Headline (Bio):</label>
+                    <input type="text" id="headline-input" class="form-input" style="margin-bottom:10px;">
+                    <button class="save-btn" onclick="saveBioData()">Save Info</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="section-header">
+                <div class="section-title">Skills</div>
+            </div>
+            <div class="input-group">
+                <input type="text" id="skill-input" class="form-input" placeholder="Add a skill (e.g. Java)">
+                <button class="add-btn" onclick="addSkill()" style="background:#6c5ce7; color:white;">Add</button>
+            </div>
+            <div id="skills-list" class="skills-container"></div>
+        </div>
+
+        <div class="glass-card">
+            <div class="section-header">
+                <div class="section-title">Social Links</div>
+                <button class="add-btn" onclick="saveSocials()">Save</button>
+            </div>
+            <div class="social-row">
+                <div class="social-item">
+                    <div class="social-icon" style="background:#2d3436;"><i class="fab fa-github"></i></div>
+                    <input type="text" id="inp-github" class="form-input" placeholder="GitHub URL">
+                </div>
+                <div class="social-item">
+                    <div class="social-icon" style="background:#0077b5;"><i class="fab fa-linkedin-in"></i></div>
+                    <input type="text" id="inp-linkedin" class="form-input" placeholder="LinkedIn URL">
+                </div>
+                <div class="social-item">
+                    <div class="social-icon" style="background:#e1306c;"><i class="fab fa-instagram"></i></div>
+                    <input type="text" id="inp-insta" class="form-input" placeholder="Instagram URL">
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="section-header">
+                <div class="section-title">Education</div>
+            </div>
+            <div class="input-group">
+                <input type="text" id="edu-school" class="form-input" placeholder="School/College">
+                <input type="text" id="edu-degree" class="form-input" placeholder="Degree">
+                <button class="add-btn" onclick="addDetail('education')"
+                    style="background:#6c5ce7; color:white;">+</button>
+            </div>
+            <ul id="education-list" style="padding-left: 20px; color:#555; margin-top: 10px;"></ul>
+        </div>
+
+        <div class="glass-card">
+            <div class="section-title">My Activity</div>
+            <div id="my-posts-feed"></div>
+        </div>
+
+    </div>
+
+    <div id="logout-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-icon">👋</div>
+            <h3 class="modal-title">Signing Out?</h3>
+            <div style="display: flex; gap: 10px; justify-content:center; margin-top:20px;">
+                <button class="modal-btn btn-danger" onclick="confirmLogout()">Yes</button>
+                <button class="modal-btn btn-outline" onclick="closeModal('logout-modal')">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="password-modal" class="modal-overlay">
+        <div class="modal-card">
+            <i class="fas fa-times close-btn" onclick="closeModal('password-modal')"></i>
+            <h3 class="modal-title" style="margin-bottom:20px;">Change Password</h3>
+
+            <input type="password" id="old-pass" class="form-input" placeholder="Old Password"
+                style="width:100%; margin-bottom:10px; box-sizing:border-box;">
+            <input type="password" id="new-pass" class="form-input" placeholder="New Password"
+                style="width:100%; margin-bottom:20px; box-sizing:border-box;">
+
+            <button class="save-btn" style="width:100%;" onclick="changePassword()">Update Password</button>
+        </div>
+    </div>
+
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) window.location.href = "login.html";
+
+        function toggleNavbar() { document.getElementById('nav-links').classList.toggle('active'); }
+        function toggleEditBio() { document.getElementById('bio-edit-area').style.display = document.getElementById('bio-edit-area').style.display === 'block' ? 'none' : 'block'; }
+
+        // --- 3 DOT MENU LOGIC ---
+        function toggleSettings() {
+            const menu = document.getElementById('settingsMenu');
+            menu.classList.toggle('active');
+        }
+        // Close menu when clicking outside
+        window.onclick = function (event) {
+            if (!event.target.matches('.three-dots-btn') && !event.target.matches('.fa-ellipsis-v')) {
+                document.getElementById('settingsMenu').classList.remove('active');
+            }
+        }
+
+        // --- MODAL LOGIC ---
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        // --- PASSWORD CHANGE LOGIC ---
+        async function changePassword() {
+            const oldPass = document.getElementById('old-pass').value;
+            const newPass = document.getElementById('new-pass').value;
+
+            if (!oldPass || !newPass) return alert("Please fill all fields");
+
+            const res = await fetch('/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: currentUser.email, oldPassword: oldPass, newPassword: newPass })
+            });
+
+            const data = await res.json();
+            alert(data.message);
+
+            if (res.ok) {
+                closeModal('password-modal');
+                document.getElementById('old-pass').value = '';
+                document.getElementById('new-pass').value = '';
+            }
+        }
+
+        // --- FETCH PROFILE ---
+        fetchProfile();
+        async function fetchProfile() {
+            try {
+                const res = await fetch('/get-profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUser.email }) });
+                const user = await res.json();
+
+                document.getElementById('p-name').innerText = user.name;
+                document.getElementById('p-email').innerText = user.email;
+                document.getElementById('main-profile-img').src = user.profilePic || "https://via.placeholder.com/150";
+                document.getElementById('p-role').innerText = user.role || "";
+                document.getElementById('p-headline').innerText = user.headline || "";
+                document.getElementById('role-input').value = user.role || "";
+                document.getElementById('headline-input').value = user.headline || "";
+                document.getElementById('inp-github').value = user.github || "";
+                document.getElementById('inp-linkedin').value = user.leetcode || "";
+                document.getElementById('inp-insta').value = user.instagram || "";
+
+                const skillContainer = document.getElementById('skills-list');
+                skillContainer.innerHTML = '';
+                if (user.skills && user.skills.length > 0) {
+                    user.skills.forEach(skill => {
+                        skillContainer.innerHTML += `<span class="skill-tag">${skill} <i class="fas fa-times skill-delete" onclick="removeSkill('${skill}')"></i></span>`;
+                    });
+                } else { skillContainer.innerHTML = '<span style="color:gray; font-size:12px;">No skills added yet.</span>'; }
+
+                const eduList = document.getElementById('education-list');
+                eduList.innerHTML = '';
+                if (user.education && user.education.length > 0) {
+                    user.education.forEach(item => {
+                        if (item.isActive) eduList.innerHTML += `<li><strong>${item.title}</strong> at ${item.org} <span style="color:#ff7675; cursor:pointer; margin-left:10px;" onclick="softDelete('education', '${item._id}')"><i class="fas fa-trash"></i></span></li>`;
+                    });
+                } else { eduList.innerHTML = '<p style="font-size:13px; color:gray;">No education details added.</p>'; }
+
+                loadMyPosts(user.name);
+            } catch (err) { console.log(err); }
+        }
+
+        async function addSkill() {
+            const input = document.getElementById('skill-input');
+            const val = input.value.trim();
+            if (!val) return;
+            const res = await fetch('/add-skill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUser.email, skill: val }) });
+            if (res.ok) { input.value = ''; fetchProfile(); }
+        }
+
+        async function removeSkill(skillName) {
+            if (!confirm(`Remove skill: ${skillName}?`)) return;
+            const res = await fetch('/remove-skill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUser.email, skill: skillName }) });
+            if (res.ok) fetchProfile();
+        }
+
+        async function saveBioData() {
+            const headline = document.getElementById('headline-input').value;
+            const role = document.getElementById('role-input').value;
+            const res = await fetch('/update-profile-data', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUser.email, headline, role }) });
+            if (res.ok) { fetchProfile(); toggleEditBio(); alert("Profile Info Updated!"); }
+        }
+
+        async function saveSocials() {
+            const data = { email: currentUser.email, github: document.getElementById('inp-github').value, leetcode: document.getElementById('inp-linkedin').value, instagram: document.getElementById('inp-insta').value };
+            const res = await fetch('/update-profile-data', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            if (res.ok) alert("Social Links Saved!");
+        }
+
+        document.getElementById('profile-upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            const formData = new FormData(); formData.append('profilePic', file); formData.append('email', currentUser.email);
+            const res = await fetch('/update-profile-pic', { method: 'POST', body: formData });
+            if (res.ok) { const data = await res.json(); document.getElementById('main-profile-img').src = data.newPath; currentUser.profilePic = data.newPath; localStorage.setItem('currentUser', JSON.stringify(currentUser)); alert("Profile Updated!"); }
+        });
+
+        async function addDetail(type) {
+            const org = document.getElementById('edu-school').value; const title = document.getElementById('edu-degree').value;
+            if (!org || !title) return;
+            await fetch('/add-detail', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUser.email, type, title, org, year: "2024" }) });
+            fetchProfile(); document.getElementById('edu-school').value = ''; document.getElementById('edu-degree').value = '';
+        }
+
+        async function softDelete(type, id) {
+            if (!confirm("Remove?")) return;
+            await fetch('/delete-detail', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUser.email, type, id }) });
+            fetchProfile();
+        }
+
+        async function loadMyPosts(username) {
+            const res = await fetch('/my-posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username }) });
+            const posts = await res.json();
+            const feed = document.getElementById('my-posts-feed');
+            feed.innerHTML = '';
+            if (posts.length === 0) { feed.innerHTML = '<p style="text-align:center; color:gray; grid-column: 1/-1;">No posts yet.</p>'; return; }
+            posts.forEach(post => {
+                let media = post.fileUrl && post.fileType.includes('image') ? `<img src="${post.fileUrl}" class="grid-post-media">` : '';
+                feed.innerHTML += `
+                    <div class="post-card">
+                        <div class="post-header">
+                            <span style="font-size:12px; color:gray;">${new Date(post.createdAt).toLocaleDateString()}</span>
+                            <span class="delete-post-btn" onclick="deletePost('${post._id}')"><i class="fas fa-trash"></i></span>
+                        </div>
+                        <p class="post-text">${post.content}</p>
+                        ${media}
+                    </div>`;
+            });
+        }
+
+        async function deletePost(id) {
+            if (!confirm("Delete post?")) return;
+            await fetch(`/delete-post/${id}`, { method: 'DELETE' });
+            fetchProfile();
+        }
+
+        function confirmLogout() { localStorage.removeItem('currentUser'); window.location.href = "login.html"; }
+    </script>
+</body>
+
+</html>

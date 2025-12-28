@@ -1,0 +1,1190 @@
+/* --- GLOBAL VARIABLES & THEME --- */
+:root {
+    --primary: #6c5ce7;
+    /* Deep Purple */
+    --primary-hover: #5649c0;
+    --secondary: #a29bfe;
+    /* Soft Purple */
+    --accent: #00d2d3;
+    /* Teal */
+    --bg-body: #f4f7f6;
+    /* Very light gray bg */
+    --bg-card: #ffffff;
+    --text-dark: #2d3436;
+    --text-muted: #636e72;
+    --shadow-soft: 0 12px 40px rgba(108, 92, 231, 0.1);
+    /* Colored soft shadow */
+    --shadow-hover: 0 15px 50px rgba(108, 92, 231, 0.2);
+    --radius-lg: 24px;
+    --radius-md: 16px;
+}
+
+/* RESET & TYPOGRAPHY */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+    line-height: 1.6;
+    padding-bottom: 60px;
+    /* Mobile navigation space */
+}
+
+h2,
+h3,
+h4 {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary);
+    transition: 0.3s;
+}
+
+ul {
+    list-style: none;
+}
+
+/* --- NAVBAR (Glassmorphism Effect) --- */
+.navbar {
+    background: rgba(255, 255, 255, 0.95);
+    /* Thoda transparent white */
+    backdrop-filter: blur(10px);
+    /* Blur effect */
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Text me gradient */
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-icons i {
+    font-size: 22px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: 0.3s all ease;
+    position: relative;
+}
+
+.nav-icons i:hover,
+.nav-icons .active {
+    color: var(--primary);
+    transform: translateY(-3px);
+}
+
+/* Active icon ke niche dot */
+.nav-icons .active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+}
+
+.nav-profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--secondary);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-profile-img:hover {
+    box-shadow: 0 0 0 4px rgba(162, 155, 254, 0.3);
+}
+
+
+/* --- RESPONSIVE GRID LAYOUT --- */
+.main-layout {
+    display: grid;
+    /* Desktop: 3 columns (Left small, Center big, Right small) */
+    grid-template-columns: 1fr 2.5fr 1fr;
+    gap: 30px;
+    max-width: 1300px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* --- CARDS GLOBAL --- */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+    margin-bottom: 25px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* --- LEFT SIDEBAR (Profile) --- */
+.profile-card {
+    padding: 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+.cover-photo {
+    height: 100px;
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid var(--bg-card);
+    margin-top: -50px;
+    object-fit: cover;
+    box-shadow: var(--shadow-soft);
+}
+
+.profile-card h3 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.profile-card p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.stats {
+    padding: 25px;
+    background: rgba(108, 92, 231, 0.03);
+    text-align: left;
+}
+
+.stats div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.stats b {
+    color: var(--primary);
+    font-size: 18px;
+}
+
+/* --- CREATE POST BOX --- */
+.input-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.input-row input {
+    flex: 1;
+    padding: 15px 20px;
+    border: 2px solid #eee;
+    border-radius: 50px;
+    background: #f9f9f9;
+    transition: 0.3s;
+    outline: none;
+    font-family: inherit;
+}
+
+.input-row input:focus {
+    border-color: var(--secondary);
+    background: white;
+}
+
+.action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.media-btn {
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.media-btn:hover {
+    background: #f0f0f0;
+    color: var(--text-dark);
+}
+
+/* GLOBAL BUTTONS */
+button,
+.post-btn,
+.apply-btn {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 10px 20px -10px rgba(108, 92, 231, 0.5);
+    transition: 0.3s all;
+}
+
+button:hover,
+.post-btn:hover,
+.apply-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px -10px rgba(108, 92, 231, 0.7);
+    background: linear-gradient(to right, var(--secondary), var(--primary));
+}
+
+/* --- POSTS FEED --- */
+.post-card {
+    padding: 25px;
+}
+
+.post-header {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.post-header img {
+    width: 55px;
+    height: 55px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+}
+
+.post-header h4 {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.post-header small {
+    color: var(--text-muted);
+}
+
+.post-text {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+.post-media {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-soft);
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.post-actions span {
+    cursor: pointer;
+    color: var(--text-muted);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 15px;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.post-actions span:hover {
+    background: rgba(108, 92, 231, 0.1);
+    color: var(--primary);
+}
+
+.post-actions span i {
+    font-size: 18px;
+}
+
+/* --- RIGHT SIDEBAR (Jobs) --- */
+.job-list li {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.job-list li:last-child {
+    border-bottom: none;
+}
+
+.job-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 210, 211, 0.1);
+    color: var(--accent);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.job-info strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.apply-btn {
+    padding: 8px 20px;
+    font-size: 14px;
+    margin-top: 10px;
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    box-shadow: none;
+}
+
+.apply-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+
+/* --- LOGIN & REGISTER PAGES --- */
+.login-body {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-container {
+    background: white;
+    padding: 50px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    border-radius: 30px;
+    box-shadow: var(--shadow-soft);
+}
+
+.login-container h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border: 2px solid #eee;
+    border-radius: 15px;
+    background: #f9f9f9;
+    outline: none;
+    transition: 0.3s;
+}
+
+.login-container input:focus {
+    border-color: var(--primary);
+    background: white;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.switch-text {
+    margin-top: 25px;
+    color: var(--text-muted);
+}
+
+.switch-text a {
+    font-weight: 600;
+}
+
+
+/* =========================================
+   MOBILE RESPONSIVE DESIGN (The Magic)
+========================================= */
+@media (max-width: 992px) {
+
+    /* Tablet: Sidebars ko thoda patla karo */
+    .main-layout {
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Mobile: Sab kuch ek column mein */
+    .main-layout {
+        grid-template-columns: 1fr;
+        /* Single column */
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    /* Mobile par Profile sabse upar dikhe, fir Feed, fir Jobs */
+    .sidebar-left {
+        order: 1;
+    }
+
+    .feed-section {
+        order: 2;
+    }
+
+    .sidebar-right {
+        order: 3;
+        display: none;
+        /* Mobile par jobs chhupa dete hain temporarily taaki feed saaf dikhe */
+    }
+
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .nav-icons {
+        gap: 15px;
+    }
+
+    .nav-icons i {
+        font-size: 20px;
+    }
+
+    .card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .post-actions span {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+}
+
+/* =========================================
+   COMPACT CARD UPDATES (Chote Cards k liye)
+========================================= */
+
+/* 1. Card ki padding aur beech ki jagah kam ki */
+.card {
+    padding: 15px;
+    /* Pehle 25px tha */
+    margin-bottom: 15px;
+    /* Pehle 25px tha */
+    border-radius: 16px;
+    /* Thoda kam golaai taaki neat lage */
+}
+
+/* 2. Post Header (Photo aur Naam) chota kiya */
+.post-header {
+    gap: 10px;
+    margin-bottom: 10px;
+    /* Spacing kam ki */
+}
+
+.post-header img {
+    width: 40px;
+    /* Pehle 55px tha */
+    height: 40px;
+    border-radius: 12px;
+}
+
+.post-header h4 {
+    font-size: 15px;
+    /* Pehle 18px tha */
+    margin-bottom: 2px;
+}
+
+.post-header small {
+    font-size: 12px;
+}
+
+/* 3. Post ka Text chota kiya */
+.post-text {
+    font-size: 14px;
+    /* Pehle 16px tha */
+    margin-bottom: 12px;
+    /* Spacing kam ki */
+    line-height: 1.4;
+}
+
+/* 4. Photo/Video ki height limit ki */
+.post-media {
+    max-height: 250px;
+    /* Zyada lambi photos jagah nahi gherengi */
+    object-fit: cover;
+    /* Photo frame mein fit hogi */
+    margin-bottom: 12px;
+    border-radius: 12px;
+}
+
+/* 5. Like/Comment buttons compact kiye */
+.post-actions {
+    padding-top: 10px;
+}
+
+.post-actions span {
+    font-size: 13px;
+    /* Icons chote kiye */
+    padding: 6px 12px;
+    gap: 6px;
+}
+
+.post-actions span i {
+    font-size: 16px;
+}
+
+/* --- SIDEBAR UPDATES (Inhe bhi match karaya) --- */
+.profile-pic {
+    width: 80px;
+    height: 80px;
+    margin-top: -40px;
+    /* Profile photo thodi choti ki */
+}
+
+.cover-photo {
+    height: 80px;
+}
+
+.profile-card h3 {
+    font-size: 18px;
+}
+
+.stats {
+    padding: 15px;
+}
+
+.stats div {
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.stats b {
+    font-size: 15px;
+}
+
+.job-list li {
+    padding: 10px 0;
+}
+
+.job-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+}
+
+.job-info strong {
+    font-size: 14px;
+}
+
+.job-info small {
+    font-size: 12px;
+}
+
+/* --- FLOATING CHAT WIDGET --- */
+.chat-widget-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    background: #6c5ce7;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(108, 92, 231, 0.4);
+    z-index: 1000;
+    transition: 0.3s;
+}
+
+.chat-widget-btn:hover {
+    transform: scale(1.1);
+}
+
+.chat-box-container {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    width: 320px;
+    height: 450px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+    display: none;
+    /* Default chup rahega */
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+    border: 1px solid #eee;
+}
+
+.chat-widget-header {
+    background: #6c5ce7;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+/* Chat List & Messages Area */
+.chat-content-area {
+    flex: 1;
+    overflow-y: auto;
+    background: #f9f9f9;
+    padding: 10px;
+}
+
+/* Contact Item (List) */
+.chat-user-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    background: white;
+    margin-bottom: 8px;
+    border: 1px solid #eee;
+}
+
+.chat-user-item:hover {
+    background: #f0f0f0;
+}
+
+/* Messages Bubbles (Mini) */
+.msg-bubble {
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 15px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    width: fit-content;
+}
+
+.msg-sent {
+    background: #6c5ce7;
+    color: white;
+    align-self: flex-end;
+    margin-left: auto;
+    border-bottom-right-radius: 2px;
+}
+
+.msg-received {
+    background: #e0e0e0;
+    color: #333;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+
+/* Input Area */
+.chat-input-mini {
+    padding: 10px;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 5px;
+}
+
+.chat-input-mini input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+.chat-input-mini button {
+    background: #6c5ce7;
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* --- TOAST NOTIFICATION (Pop-up) --- */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 15px 20px;
+    border-left: 5px solid #6c5ce7;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transform: translateX(150%);
+    /* Start hidden (Right side bahar) */
+    transition: 0.5s ease-in-out;
+    z-index: 2000;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+/* Slide in */
+
+
+/* --- SIDEBAR JOB CARDS (Unique Style) --- */
+.mini-job-card {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover Effect: Card thoda upar uthega aur border color change hoga */
+.mini-job-card:hover {
+    transform: translateY(-3px);
+    border-color: #6c5ce7;
+    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.1);
+}
+
+/* Left side colored strip for style */
+.mini-job-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, #6c5ce7, #a29bfe);
+}
+
+.mini-job-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.mini-job-company {
+    font-size: 12px;
+    color: #777;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mini-apply-btn {
+    background: transparent;
+    border: 1px solid #6c5ce7;
+    color: #6c5ce7;
+    font-size: 12px;
+    padding: 6px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.2s;
+    font-weight: 600;
+    width: 100%;
+}
+
+.mini-apply-btn:hover {
+    background: #6c5ce7;
+    color: white;
+}
+
+/* --- CUSTOM ALERT / MODAL CARD --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Piche ka background dhundhla */
+    display: none;
+    /* Default chup rahega */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    animation: popIn 0.3s ease;
+    position: relative;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.modal-msg {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.modal-btn {
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 100%;
+}
+
+.btn-success {
+    background: #6c5ce7;
+    color: white;
+}
+
+.btn-danger {
+    background: #ff7675;
+    color: white;
+}
+
+.btn-outline {
+    background: #f0f0f0;
+    color: #333;
+    margin-top: 10px;
+}
+
+.modal-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* --- PROFILE IMAGE EDIT STYLE --- */
+.profile-pic-wrapper {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin-top: -65px;
+    display: inline-block;
+}
+
+.profile-pic-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.camera-icon-overlay {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: #6c5ce7;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid white;
+    transition: 0.3s;
+}
+
+.camera-icon-overlay:hover {
+    background: #5a4bcf;
+    transform: scale(1.1);
+}
+
+.btn-remove {
+    background: #fff;
+    color: #ff7675;
+    border: 1px solid #ff7675;
+    padding: 8px 15px;
+    font-size: 13px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-remove:hover {
+    background: #ff7675;
+    color: white;
+}
+
+.connection-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    /* Message aur Remove button ke beech gap */
+    margin-top: 15px;
+}
+
+/* --- REMOVE CONNECTION BUTTON STYLES --- */
+.connection-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    /* Message aur Remove button ke beech gap */
+    margin-top: 15px;
+}
+
+.btn-message {
+    background: linear-gradient(to right, #6c5ce7, #a29bfe);
+    color: white;
+    padding: 8px 20px;
+    font-size: 13px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-message:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
+/* Remove Button (Red Color) */
+.btn-remove {
+    background: white;
+    color: #ff7675;
+    border: 1px solid #ff7675;
+    padding: 8px 15px;
+    font-size: 13px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-remove:hover {
+    background: #ff7675;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* --- SIDEBAR EDIT BUTTON --- */
+.sidebar-edit-btn {
+    background: transparent;
+    border: 1px solid #6c5ce7;
+    color: #6c5ce7;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    width: 100%;
+    /* Pura faila hua button */
+    transition: 0.3s;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.sidebar-edit-btn:hover {
+    background: #6c5ce7;
+    color: white;
+}
+
+.sidebar-stats {
+    text-align: left;
+    padding: 10px 15px;
+    font-size: 13px;
+    color: #555;
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+/* --- FIX: FORCE TRANSPARENCY --- */
+html, body {
+    min-height: 100vh; /* Ensure full height */
+}
+
+/* Agar purane CSS mein background white hai, to use hatayein */
+.main-layout {
+    background: transparent !important; 
+}
+
+/* Sidebar aur Feed ko bhi transparent rakhein taaki body ka color dikhe */
+.sidebar-left, .feed-section, .sidebar-right {
+    background: transparent !important;
+}
+
+/* Glass effect ko clear dikhane ke liye */
+.card, .navbar {
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+/* --- PROFILE PREVIEW MODAL --- */
+.preview-modal-content {
+    background: #fff;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.preview-cover {
+    height: 100px;
+    background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+    border-radius: 15px 15px 0 0;
+    margin: -30px -30px 40px -30px;
+}
+
+.preview-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+    margin-top: -80px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.preview-name { font-size: 22px; font-weight: 700; color: #2d3436; margin: 10px 0 5px; }
+.preview-headline { font-size: 14px; color: #636e72; margin-bottom: 20px; }
+
+.preview-actions {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.preview-btn {
+    padding: 10px 25px;
+    border-radius: 30px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+    flex: 1;
+}
+
+.btn-primary-modal { background: #6c5ce7; color: white; }
+.btn-primary-modal:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3); }
+.btn-secondary-modal { background: #dfe6e9; color: #2d3436; }
+.btn-secondary-modal:hover { background: #b2bec3; }
+
+.clickable-profile { cursor: pointer; transition: 0.2s; }
+.clickable-profile:hover { opacity: 0.8; }
